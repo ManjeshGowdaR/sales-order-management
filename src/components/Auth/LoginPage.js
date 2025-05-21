@@ -1,105 +1,141 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, FormControl, FormLabel, Input, Heading, VStack, Center, Text } from '@chakra-ui/react';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Heading,
+  VStack,
+  Center,
+  Text,
+  Icon,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { FaUser, FaLock } from "react-icons/fa";
 
 const LoginPage = () => {
-    const { register, handleSubmit } = useForm();
-    const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
-    const [usernameError, setUsernameError] = useState('');
-    const [passwordError, setPasswordError] = useState('');
+  const [usernameError, setUsernameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-    const onSubmit = data => {
-        let valid = true;
-        if (data.username !== 'admin') {
-            setUsernameError('Please enter a valid username');
-            valid = false;
-        } else {
-            setUsernameError('');
-        }
+  const onSubmit = (data) => {
+    let valid = true;
 
-        if (data.password !== 'password') {
-            setPasswordError('Please enter a valid password');
-            valid = false;
-        } else {
-            setPasswordError('');
-        }
+    if (data.username !== "User") {
+      setUsernameError("Invalid username");
+      valid = false;
+    } else {
+      setUsernameError("");
+    }
 
-        if (valid) {
-            localStorage.setItem('authenticated', 'true');
-            navigate('/sales');
-        }
-    };
+    if (data.password !== "Pswd") {
+      setPasswordError("Invalid password");
+      valid = false;
+    } else {
+      setPasswordError("");
+    }
 
-    return (
-        <Center h="100vh">
-            <Box
-                p={8}
-                maxWidth="400px"
-                borderWidth={1}
-                borderRadius={15}
-                boxShadow="lg"
-                position="relative"
-                _before={{
-                    content: '""',
-                    position: 'absolute',
-                    top: '-2px',
-                    right: '-2px',
-                    bottom: '-2px',
-                    left: '-2px',
-                    zIndex: -1,
-                    borderRadius: '15px'
-                }}
+    if (valid) {
+      localStorage.setItem("authenticated", "true");
+      navigate("/sales");
+    }
+  };
+
+  // Light/Dark mode color styles
+  const bg = useColorModeValue("white", "gray.800");
+  const cardBg = useColorModeValue("white", "gray.700");
+  const textColor = useColorModeValue("gray.700", "whiteAlpha.900");
+  const labelColor = useColorModeValue("gray.600", "gray.300");
+  const inputBorderColor = useColorModeValue("gray.300", "gray.600");
+
+  return (
+    <Center minH="100vh" bg={bg}>
+      <Box
+        p={8}
+        maxW="400px"
+        w="full"
+        bg={cardBg}
+        borderRadius="2xl"
+        boxShadow="2xl"
+        transition="all 0.3s ease"
+      >
+        <Heading
+          mb={6}
+          textAlign="center"
+          fontSize="2xl"
+          color={textColor}
+          fontWeight="bold"
+        >
+          Welcome
+        </Heading>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <VStack spacing={5}>
+            <FormControl isInvalid={usernameError}>
+              <FormLabel color={labelColor}>
+                <Icon as={FaUser} mr={2} />
+                Username
+              </FormLabel>
+              <Input
+                type="text"
+                {...register("username")}
+                placeholder="Enter your username"
+                focusBorderColor="teal.400"
+                borderRadius="lg"
+                borderColor={inputBorderColor}
+                color={textColor}
+              />
+              {usernameError && (
+                <Text color="red.400" fontSize="sm">
+                  {usernameError}
+                </Text>
+              )}
+            </FormControl>
+
+            <FormControl isInvalid={passwordError}>
+              <FormLabel color={labelColor}>
+                <Icon as={FaLock} mr={2} />
+                Password
+              </FormLabel>
+              <Input
+                type="password"
+                {...register("password")}
+                placeholder="Enter your password"
+                focusBorderColor="teal.400"
+                borderRadius="lg"
+                borderColor={inputBorderColor}
+                color={textColor}
+              />
+              {passwordError && (
+                <Text color="red.400" fontSize="sm">
+                  {passwordError}
+                </Text>
+              )}
+            </FormControl>
+
+            <Button
+              type="submit"
+              bgGradient="linear(to-r, teal.400, blue.500)"
+              color="white"
+              size="lg"
+              width="full"
+              mt={4}
+              borderRadius="lg"
+              _hover={{
+                opacity: 0.9,
+              }}
             >
-                <Heading mb={6} textAlign="center">Login</Heading>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <VStack spacing={4}>
-                        <FormControl isInvalid={usernameError}>
-                            <FormLabel>Username</FormLabel>
-                            <Input
-                                type="text"
-                                {...register('username')}
-                                placeholder="Enter your username"
-                                focusBorderColor="teal.400"
-                                borderRadius="md"
-                            />
-                            {usernameError && (
-                                <Text color="red.500" fontSize="sm">{usernameError}</Text>
-                            )}
-                        </FormControl>
-                        <FormControl isInvalid={passwordError}>
-                            <FormLabel>Password</FormLabel>
-                            <Input
-                                type="password"
-                                {...register('password')}
-                                placeholder="Enter your password"
-                                focusBorderColor="teal.400"
-                                borderRadius="md"
-                            />
-                            {passwordError && (
-                                <Text color="red.500" fontSize="sm">{passwordError}</Text>
-                            )}
-                        </FormControl>
-                        <Button
-                            type="submit"
-                            bg="linear-gradient(135deg, #71b7e6, #9b59b6)"
-                            color="white"
-                            size="lg"
-                            width="full"
-                            mt={4}
-                            _hover={{
-                                bg: "linear-gradient(135deg, #71b7e6, #9b59b6)",
-                                opacity: 0.9
-                            }}
-                        >
-                            Login
-                        </Button>
-                    </VStack>
-                </form>
-            </Box>
-        </Center>
-    );
+              Login
+            </Button>
+          </VStack>
+        </form>
+      </Box>
+    </Center>
+  );
 };
 
 export default LoginPage;
