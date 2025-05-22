@@ -41,7 +41,7 @@ export const products = [
         },
         amount: 33,
         unit: "kg",
-        quantity_in_inventory: 0,
+        quantity_in_inventory: 10,
         product: 209,
       },
       {
@@ -50,7 +50,7 @@ export const products = [
         max_retail_price: 32,
         amount: 33,
         unit: "kg",
-        quantity_in_inventory: 0,
+        quantity_in_inventory: 10,
         product: 209,
       },
       {
@@ -59,7 +59,7 @@ export const products = [
         max_retail_price: 21,
         amount: 22,
         unit: "kg",
-        quantity_in_inventory: 1,
+        quantity_in_inventory: 5,
         product: 209,
       },
     ],
